@@ -7,7 +7,7 @@ function Input({ label, error = '', ...restProps }) {
         h-20
       '
     >
-      <label>{label}:</label>
+      <label>{label}</label>
       <input className={ error && 'border-red-400' } { ...restProps }/>
       {error && <p className="text-red-500 text-base sm:text-xs">{error}</p>}
     </div>
