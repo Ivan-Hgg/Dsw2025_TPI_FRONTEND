@@ -7,9 +7,9 @@ function Input({ label, error = '', ...restProps }) {
         h-20
       '
     >
-      <label>{label}</label>
-      <input className={ error && 'border-red-400' } { ...restProps }/>
-      {error && <p className="text-red-500 text-base sm:text-xs">{error}</p>}
+      <label className="text-sm md:text-md">{label}</label>
+      <input className={ `text-sm md:text-md ${error && 'border-red-400'}` } { ...restProps }/>
+      {error && <p className="text-red-500 text-xs sm:text-xs">{error}</p>}
     </div>
   );
 };

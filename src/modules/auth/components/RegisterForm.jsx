@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import Input from "../../shared/components/Input";
 import Button from "../../shared/components/Button";
 import { useNavigate } from "react-router-dom";
+import Select from "../../shared/components/Select";
 
 function RegisterForm(){
     const{register, handleSubmit, formState:{errors}}= useForm();
@@ -16,11 +17,14 @@ function RegisterForm(){
         <form onSubmit={handleSubmit(onValid)}
         className="flex
         flex-col
-        gap-15
+        justify-center
+        gap-1
         bg-white
         p-10
+        h-screen
         sm:w-md
-        sm:gap-4
+        sm:p-8
+        sm:gap-2
         sm:rounded-lg
         sm:shadow-lg "
         >
@@ -47,16 +51,21 @@ function RegisterForm(){
                 pattern:{value: /^\d+$/, message: 'Telefono solo puede contener dígitos'}
             })} error={errors.tel?.message} />
 
-            <Input label={'Rol'} {...register('role', {required: 'Rol requerida',
-            })} error={errors.role?.message} />
+            <Select label={'Rol'} name={"role"} id={"roles-select"} {...register('role', {required: 'Rol Requerido'})}
+            error={errors.role?.message}
+            >
+                <option value=""></option>
+                <option value="CLIENTE">CLIENTE</option>
+                <option value="ADMINISTRADOR">ADMINISTRADOR</option>
+            </Select>
 
             <Input label={'Contraseña'} {...register('password', {required: 'Contraseña requerida',
             })} error={errors.password?.message} />
             <Input label={'Confirmar contraseña'} {...register('confirmpw', {required: 'Contraseña requerida',
             })} error={errors.confirmpw?.message} />
 
-            <Button type='submit'>Registrar Usuario</Button>
-            <Button variant='secondary' onClick={() => navigate('/login')}>Iniciar Sesion</Button>
+            <Button type='submit' className='text-sm md:text-md'>Registrar Usuario</Button>
+            <Button variant='secondary' className='text-sm md:text-md' onClick={() => navigate('/login')}>Iniciar Sesion</Button>
 
                 
             
