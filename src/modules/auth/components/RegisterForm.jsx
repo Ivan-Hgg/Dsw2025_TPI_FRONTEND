@@ -3,16 +3,36 @@ import Input from "../../shared/components/Input";
 import Button from "../../shared/components/Button";
 import { useNavigate } from "react-router-dom";
 import Select from "../../shared/components/Select";
+import useAuth from "../hook/useAuth";
+import { useState } from "react";
 
 function RegisterForm(){
-    const{register, handleSubmit, formState:{errors}}= useForm();
+    const{register, handleSubmit, watch, formState:{errors}}= useForm();
+    const { singup } = useAuth();
+    const [errorMessage, setErrorMessage] = useState('');
 
-    const onValid= ()=>{
-        console.log('registrado');
+    const onValid= async (formData)=>{
+        try {
+            const { error } = await singup(formData.username, formData.password, formData.name, formData.email, formData.tel, formData.role);
+
+            if (error) {
+                setErrorMessage(error.response.data);
+                return;
+            }
+
+            navigate('/login');
+            } catch (error) {
+            if (error?.response?.data) {
+                setErrorMessage(error?.response?.data);
+            } else {
+                debugger;
+                setErrorMessage('Llame a soporte');
+            }
+        }
     }
     const navigate = useNavigate();
+    const password = watch("password"); 
     
-
     return(
         <form onSubmit={handleSubmit(onValid)}
         className="flex
@@ -34,7 +54,8 @@ function RegisterForm(){
                 pattern:{value:/^[a-zA-Z0-9._-]+$/, message:'Nombre de usuario invalido: Solo letras, números, puntos, guiones bajos y guiones'}
             })} error={errors.username?.message}/>
 
-            <Input label={'Nombre'} {...register('name', {required: 'Nombre requerido',
+            <Input label={'Nombre'} {...register('name', {
+                // required: 'Nombre requerido',
                 minLength:{value:3, message:'minimo 3 caracteres'},
                 maxLength:{value:50, messahe:'maximo 50 caracteres'},
             })} error={errors.name?.message} />
@@ -45,7 +66,8 @@ function RegisterForm(){
                 pattern:{value: /^[a-zA-Z0-9.!#$%&'+-/=?^_`{|}~]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$/, message: 'Direccion de Email invalida'}
             })} error={errors.email?.message} />
 
-            <Input label={'Telefono'} {...register('tel', {required: 'Teefono requerido',
+            <Input label={'Telefono'} {...register('tel', {
+                // required: 'Teefono requerido',
                 minLength:{value:7, message:'minimo 7 caracteres'},
                 maxLength:{value:15, messahe:'maximo 15 caracteres'},
                 pattern:{value: /^\d+$/, message: 'Telefono solo puede contener dígitos'}
@@ -62,12 +84,13 @@ function RegisterForm(){
             <Input label={'Contraseña'} {...register('password', {required: 'Contraseña requerida',
             })} error={errors.password?.message} />
             <Input label={'Confirmar contraseña'} {...register('confirmpw', {required: 'Contraseña requerida',
+            validate: (value) => value===password || 'Las contraseñas no coinciden'
             })} error={errors.confirmpw?.message} />
 
             <Button type='submit' className='text-sm md:text-md'>Registrar Usuario</Button>
             <Button variant='secondary' className='text-sm md:text-md' onClick={() => navigate('/login')}>Iniciar Sesion</Button>
 
-                
+            {errorMessage && <p className='text-sm md:text-md text-red-500'>{errorMessage}</p>}
             
 
         </form>

@@ -30,8 +30,8 @@ function LoginForm() {
 
       navigate('/admin/home');
     } catch (error) {
-      if (error?.response?.data?.code) {
-        setErrorMessage(frontendErrorMessage[error?.response?.data?.code]);
+      if (error?.response?.data) {
+        setErrorMessage(error?.response?.data);
       } else {
         setErrorMessage('Llame a soporte');
       }
@@ -42,7 +42,7 @@ function LoginForm() {
     <form className='
         flex
         flex-col
-        gap-20
+        gap-5
         bg-white
         p-8
         sm:w-md
@@ -68,8 +68,8 @@ function LoginForm() {
         error={errors.password?.message}
       />
 
-      <Button type='submit'>Iniciar Sesión</Button>
-      <Button variant='secondary' onClick={() => navigate('/singup')}>Registrar Usuario</Button>
+      <Button type='submit' className='text-sm md:text-md'>Iniciar Sesión</Button>
+      <Button variant='secondary' className='text-sm md:text-md' onClick={() => navigate('/singup')}>Registrar Usuario</Button>
       {errorMessage && <p className='text-red-500'>{errorMessage}</p>}
     </form>
   );

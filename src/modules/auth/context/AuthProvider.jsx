@@ -1,5 +1,6 @@
 import { createContext, useState } from 'react';
 import { login } from '../services/login';
+import { register } from '../services/register';
 
 const AuthContext = createContext();
 
@@ -29,12 +30,21 @@ function AuthProvider({ children }) {
     return { error: null };
   };
 
+  const singup= async (username, password, name, email, tel, role)=>{
+    const { error } = await register(username, password, name, email, tel, role);
+    if (error) {
+      return { error };
+    }
+    return { error: null };
+  };
+
   return (
     <AuthContext.Provider
       value={ {
         isAuthenticated,
         singin,
         singout,
+        singup,
       } }
     >
       {children}
