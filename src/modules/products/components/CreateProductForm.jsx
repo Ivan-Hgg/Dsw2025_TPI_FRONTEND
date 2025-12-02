@@ -32,8 +32,8 @@ function CreateProductForm() {
 
       navigate('/admin/products');
     } catch (error) {
-      if (error.response?.data?.detail) {
-        const errorMessage = frontendErrorMessage[error.response.data.code];
+      if (error.response?.data) {
+        const errorMessage = error.response.data;
 
         setErrorBackendMessage(errorMessage);
       } else {
@@ -48,9 +48,8 @@ function CreateProductForm() {
         className='
           flex
           flex-col
-          gap-20
-          p-8
-
+          gap-2
+          p-5
           sm:gap-4
         '
         onSubmit={handleSubmit(onValid)}
@@ -104,7 +103,7 @@ function CreateProductForm() {
         <div className='sm:text-end'>
           <Button type='submit' className='w-full sm:w-fit'>Crear Producto</Button>
         </div>
-        {errorBackendMessage && <span className='text-red-500'>{errorBackendMessage}</span>}
+        {errorBackendMessage && <span className='text-base md:text-md text-red-500'>{errorBackendMessage}</span>}
       </form>
     </Card>
   );

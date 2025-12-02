@@ -1,8 +1,8 @@
 import Card from '../../shared/components/Card';
-import { Products } from '../services/products';
+import { Products } from '../../products/services/listAll';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { Orders } from '../services/orders';
+import { Orders } from '../../orders/services/listAll';
 
 function Home() {
   const [quantityProduct, setQuantityProduct]=useState();
@@ -29,9 +29,10 @@ function Home() {
   };
 
   useEffect(() => {
+    console.log("home montado");
     getProductQuantity();
     getOrderQuantity()
-  });
+  }, []);
 
   return (
     <div
